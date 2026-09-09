@@ -28,6 +28,12 @@ public  class TimeUtils {
         }
         return false;
     }
+    public static String formatTime(LocalTime now, LocalTime arrival, String formatType) {
+        if ("relative".equalsIgnoreCase(formatType)) {
+            return getMinutesInBetween(now, arrival) + "min";
+        }
+        return String.format("%02d:%02d", arrival.getHour(), arrival.getMinute());
+    }
 
 
 }
