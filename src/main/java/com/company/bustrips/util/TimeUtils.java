@@ -2,8 +2,13 @@ package com.company.bustrips.util;
 
 import java.time.Duration;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+
+import com.company.bustrips.cli.TimeFormat;
 
 public  class TimeUtils {
+    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
+    
     public static LocalTime parseGivenTime(String time){
         String[] parts= time.trim().split(":");
         int hours=Integer.parseInt(parts[0])%24;
@@ -28,11 +33,12 @@ public  class TimeUtils {
         }
         return false;
     }
-    public static String formatTime(LocalTime now, LocalTime arrival, String formatType) {
-        if ("relative".equalsIgnoreCase(formatType)) {
-            return getMinutesInBetween(now, arrival) + "min";
+    public static String formatTime(LocalTime queryTime, LocalTime arrivalTime, TimeFormat format) {
+        if (format == TimeFormat.RELATIVE) {
+            long minutes = getMinutesInBetween(queryTime, arrivalTime);
+            return minutes + "min";
         }
-        return String.format("%02d:%02d", arrival.getHour(), arrival.getMinute());
+        return arrivalTime.format(TIME_FORMATTER);
     }
 
 
