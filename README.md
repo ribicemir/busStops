@@ -41,7 +41,7 @@ Vsi testi se zaženejo z ukazom:mvn test
 
 **Struktura testov:**
 
-*   **Unit testi (TimeUtilsTest, TimetableServiceUnitTest)**:
+*   **Unit testi (TimeUtilsTest)**:
 
     *   Pretvorba gtfs v localtime.
 
