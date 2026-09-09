@@ -21,5 +21,13 @@ public  class TimeUtils {
         return minutes;
     }
 
+    public static boolean isWithin2Hours(LocalTime now, LocalTime arrival){
+        long min= getMinutesInBetween(now,arrival);
+        if (min>=0 && min<=120){
+            return true;
+        }
+        return false;
+    }
+
 
 }
