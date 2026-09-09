@@ -41,7 +41,9 @@ Vsi testi se zaženejo z ukazom:mvn test
 
 **Struktura testov:**
 
-*   **Unit testi (TimeUtilsTest)**:
+*   **UNIT TESTI**:
+
+*  **TimeUtilsTest**:
 
     *   Pretvorba gtfs v localtime.
 
@@ -54,6 +56,24 @@ Vsi testi se zaženejo z ukazom:mvn test
     *   Preverjanje 2-urnega intervala vključno z mejnimi vrednostmi.
     
     * Formatiranje v relativno (min) in absolutno (HH:mm) obliko.
+
+*   **AppArgsTest**:
+
+    *   Uspešno razčlenjevanje veljavnih argumentov v objekt AppArgs.
+
+    *   Prepoznavanje absolutnega in relativnega formata.
+
+    *   Validacija napak ob napačnem številu argumentov (premalo/preveč).
+
+    *   Validacija števila avtobusov ($N \\le 0$ ali neveljavna številska vrednost).
+
+    *   Validacija neveljavnega formata časa.
+
+*   **TimeFormatTest**:
+
+    *   Pravilna pretvorba nizov v enum TimeFormat (neobčutljivo na velike/male črke).
+
+    *   Obravnava neveljavnih formatov in null vrednosti.
 
 
 *   **Integracijski testi (TimetableServiceIntegrationTest)**:
@@ -80,7 +100,13 @@ Aplikacija je zasnovana modularno in ločena na posamezne odgovornosti:
 
 *   util: TimeUtils vsebuje statične pomožne metode za časovne izračune (java.time).
 
-*   Main: Vstopna točka z validacijo vhodnih parametrov in končnim formatiranim izpisom.
+*   Main: Čista vstopna točka, ki povezuje argumente, inicializira storitve ter poskrbi za končni formatiran izpis.
+
+**cli**:
+
+  *   AppArgs: Enkapsulacija, branje in stroga validacija argumentov ukazne vrstice.
+
+  *   TimeFormat: Tipsko varen enum (RELATIVE, ABSOLUTE), ki odpravlja primerjave nepreverjenih nizov po kodi.
 
 
 **Pomnilniška učinkovitost:**
@@ -113,4 +139,4 @@ Aplikacija je zasnovana modularno in ločena na posamezne odgovornosti:
 
     *   Implementacija algoritma za iskanje optimalne poti med poljubnima postajama s prestopanji.
 
-*   **Razvoj grafičnega uporabniškega vmesnika**:
+*   **Razvoj grafičnega uporabniškega vmesnika**
