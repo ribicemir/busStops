@@ -26,4 +26,30 @@ public class GtfsParser {
         return 0;
     }
 
+    private String getColumn(String[] cols, int index) {
+        if (index >= cols.length || index < 0) return "";
+        return cols[index].trim().replace("\"", "");
+    }
+
+    public Optional<String> findStopName(String stationId) throws IOException{
+        Path path=dataDir.resolve("stops.txt");
+        if(!Files.exists(path)) return Optional.empty();
+
+        try(BufferedReader reader=Files.newBufferedReader(path)){
+            String header=reader.readLine();
+            int idIndex=getColumnIndex(header,"stop_id");
+            int nameIndex=getColumnIndex(header,"stop_name");
+
+            String line;
+            while ((line=reader.readLine())!=null){
+                String[] cols= line.split(",",-1);
+                String currentId = getColumn(cols, idIndex);
+                if (currentId.equals(stationId)) {
+                    return Optional.of(getColumn(cols, nameIndex));
+                }
+            }
+        }
+        return Optional.empty();
+    }
+
 }
