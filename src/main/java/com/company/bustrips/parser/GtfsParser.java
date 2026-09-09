@@ -52,4 +52,34 @@ public class GtfsParser {
         return Optional.empty();
     }
 
+    public List<StopTime> findUpcomingStopTimes(String stationId, LocalTime now) throws IOException {
+       List<StopTime> result= new ArrayList<>();
+       Path path=dataDir.resolve("stop_times.txt");
+
+        try (BufferedReader reader = Files.newBufferedReader(path)) {
+            String header = reader.readLine();
+            int tripIdIndex = getColumnIndex(header, "trip_id");
+            int arrivalIndex = getColumnIndex(header, "arrival_time");
+            int stopIdIndex = getColumnIndex(header, "stop_id");
+
+            String line;
+            while((line=reader.readLine())!=null){
+                String[] cols = line.split(",", -1);
+
+                //filtriram postajo, ker ne zelim gledati cas za vse postaje
+                if (getColumn(cols, stopIdIndex).equals(stationId)) {
+                    LocalTime arrival = TimeUtils.parseGivenTime(getColumn(cols, arrivalIndex));
+                    if (TimeUtils.isWithin2Hours(now,arrival)){
+                        long diff = TimeUtils.getMinutesInBetween(now, arrival);
+                        String tripId = getColumn(cols, tripIdIndex);
+
+                        result.add(new StopTime(tripId, arrival, diff));
+                    }
+            }
+
+            }
+        }
+        return result;
+    }
+
 }
