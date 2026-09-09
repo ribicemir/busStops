@@ -1,4 +1,5 @@
 package com.company.bustrips;
+import com.company.bustrips.cli.TimeFormat;
 import com.company.bustrips.util.TimeUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -59,10 +60,10 @@ public class TimeUtilsTest {
         LocalTime now = LocalTime.of(12, 0);
         LocalTime arrival = LocalTime.of(12, 15);
 
-        assertThat(TimeUtils.formatTime(now, arrival, "relative")).isEqualTo("15min");
-        assertThat(TimeUtils.formatTime(now, arrival, "RELATIVE")).isEqualTo("15min");
+        assertThat(TimeUtils.formatTime(now, arrival, TimeFormat.RELATIVE)).isEqualTo("15min");
+        assertThat(TimeUtils.formatTime(now, arrival, TimeFormat.RELATIVE)).isEqualTo("15min");
 
 
-        assertThat(TimeUtils.formatTime(now, arrival, "absolute")).isEqualTo("12:15");
+        assertThat(TimeUtils.formatTime(now, arrival, TimeFormat.ABSOLUTE)).isEqualTo("12:15");
     }
 }
