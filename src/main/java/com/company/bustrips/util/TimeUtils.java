@@ -12,6 +12,14 @@ public  class TimeUtils {
         return LocalTime.of(hours,minutes,seconds);
     }
 
+    public static long getMinutesInBetween(LocalTime now, LocalTime arrival){
+        long minutes=Duration.between(now, arrival).toMinutes();
+        if (minutes<0){
+            minutes+=24*60;
+
+        }
+        return minutes;
+    }
 
 
 }
