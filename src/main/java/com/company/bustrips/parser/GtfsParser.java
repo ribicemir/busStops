@@ -82,4 +82,60 @@ public class GtfsParser {
         return result;
     }
 
+    public Map<String, String> findRouteIdsForTrips(Set<String> tripIds) throws IOException {
+        Map<String, String> tripToRoute = new HashMap<>();
+        Path path = dataDir.resolve("trips.txt");
+        if (!Files.exists(path)) return tripToRoute;
+
+        try (BufferedReader reader = Files.newBufferedReader(path)) {
+            String header = reader.readLine();
+            int tripIdIndex = getColumnIndex(header, "trip_id");
+            int routeIdIndex = getColumnIndex(header, "route_id");
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] cols = line.split(",", -1);
+                String tripId = getColumn(cols, tripIdIndex);
+
+                if (tripIds.contains(tripId)) {
+                    String routeId = getColumn(cols, routeIdIndex);
+                    tripToRoute.put(tripId, routeId);
+
+                    // Če smo našli vse vožnje, takoj prekinemo
+                    if (tripToRoute.size() == tripIds.size()) {
+                        break;
+                    }
+                }
+            }
+        }
+        return tripToRoute;
+    }
+    public Map<String,String> findRouteShortNames(Set<String> routeIds) throws IOException{
+        Map<String,String> routeNames= new HashMap<>();
+        Path path= dataDir.resolve("routes.txt");
+        if (!Files.exists(path)) return routeNames;
+
+        try (BufferedReader reader = Files.newBufferedReader(path)) {
+            String header = reader.readLine();
+            int idIndex = getColumnIndex(header, "route_id");
+            int nameIndex = getColumnIndex(header, "route_short_name");
+
+            String line;
+            while ((line=reader.readLine())!=null){
+                String[] cols = line.split(",", -1);
+                String routeId = getColumn(cols, idIndex);
+                if (routeIds.contains(routeId)) {
+                    String shortName = getColumn(cols, nameIndex);
+                    routeNames.put(routeId, shortName);
+
+
+                    if (routeNames.size() == routeIds.size()) {
+                        break;
+                    }
+                }
+            }
+        }
+        return routeNames;
+    }
+
 }
